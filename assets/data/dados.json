@@ -1,0 +1,39 @@
+{
+  "informacoes_curso": {
+    "carga_horaria": "160 horas",
+    "duracao": "7 meses",
+    "taxa_matricula": 80.00
+  },
+  "cidades_disponiveis": [
+    {
+      "id": 1,
+      "nome": "Itapipoca - CE",
+      "mensalidade": 150.00
+    },
+    {
+      "id": 2,
+      "nome": "Trairi - CE",
+      "mensalidade": 170.00
+    }
+  ],
+  "depoimentos": [
+    {
+      "nome": "Maria Silva",
+      "cidade": "Itapipoca",
+      "texto": "O curso mudou minha percepção. Sou dona de casa e sempre tive medo de engasgos com meus filhos. Na aula prática aprendi a manobra e hoje me sinto segura!",
+      "foto": "https://randomuser.me/api/portraits/women/44.jpg"
+    },
+    {
+      "nome": "Carlos Roberto",
+      "cidade": "Trairi",
+      "texto": "Excelente metodologia! Os professores explicam termos técnicos de um jeito muito simples. Qualquer pessoa consegue aprender a fazer uma reanimação cardíaca.",
+      "foto": "https://randomuser.me/api/portraits/men/32.jpg"
+    },
+    {
+      "nome": "Ana Beatriz",
+      "cidade": "Itapipoca",
+      "texto": "Participei do curso e foi incrível. A carga horária prática te dá muita confiança para agir sob pressão. Recomendo a todos!",
+      "foto": "https://randomuser.me/api/portraits/women/68.jpg"
+    }
+  ]
+}
