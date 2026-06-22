@@ -24,15 +24,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
 
-            // 2. Preenche os Depoimentos Dinamicamente com Bootstrap Cards
+            // 2. Preenche os Depoimentos Dinamicamente
             if (containerDepoimentos && dados.depoimentos) {
                 containerDepoimentos.innerHTML = ''; 
                 
-                dados.depoimentos.forEach(dep => {
-                    const col = document.createElement('div');
-                    col.className = 'col-md-4';
+                dados.depoimentos.forEach((dep) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'depoimento-slide'; // Apenas o card normal
                     
-                    col.innerHTML = `
+                    slide.innerHTML = `
                         <div class="card h-100 border-0 shadow-sm p-4">
                             <div class="d-flex align-items-center mb-3">
                                 <img src="${dep.foto}" alt="${dep.nome}" class="rounded-circle me-3" width="60" height="60" style="object-fit: cover; border: 2px solid var(--cor-primaria);">
@@ -51,8 +51,11 @@ document.addEventListener("DOMContentLoaded", () => {
                             </div>
                         </div>
                     `;
-                    containerDepoimentos.appendChild(col);
+                    containerDepoimentos.appendChild(slide);
                 });
+
+                // Inicia o motor do Slider
+                iniciarSliderDepoimentos();
             }
             
         } catch (erro) {
@@ -61,7 +64,73 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Interceptando o envio do formulário
+    // 3. Função do Slider Centralizado
+    function iniciarSliderDepoimentos() {
+        const track = document.getElementById('container-depoimentos');
+        const slides = document.querySelectorAll('.depoimento-slide');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        let currentIndex = 0;
+
+        if (slides.length === 0) return;
+
+        function updateSlider() {
+            // Adiciona a classe 'active' apenas no item do meio
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                if (index === currentIndex) {
+                    slide.classList.add('active');
+                }
+            });
+
+            // Pega a largura do card, o espaço (gap) e a largura total da tela
+            const slideWidth = slides[0].getBoundingClientRect().width;
+            const gap = parseFloat(window.getComputedStyle(track).gap) || 0;
+            const containerWidth = track.parentElement.getBoundingClientRect().width;
+            
+            // O offset é a margem necessária para empurrar o slide para o centro exato
+            const offset = (containerWidth - slideWidth) / 2;
+            const moveAmount = slideWidth + gap;
+            
+            // Move a trilha compensando com o offset para centralizar
+            track.style.transform = `translateX(${-(currentIndex * moveAmount) + offset}px)`;
+        }
+
+        // Lógica dos Botões
+        btnNext.addEventListener('click', () => {
+            if (currentIndex < slides.length - 1) {
+                currentIndex++;
+            } else {
+                currentIndex = 0; // Se chegou no fim, volta pro começo
+            }
+            updateSlider();
+        });
+
+        btnPrev.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+            } else {
+                currentIndex = slides.length - 1; // Se está no começo, vai pro final
+            }
+            updateSlider();
+        });
+
+        // Executa a primeira vez
+        updateSlider();
+
+        // Recalcula se o usuário virar o celular ou redimensionar a tela
+        window.addEventListener('resize', updateSlider);
+
+        // Transição automática a cada 4 segundos
+        let autoplay = setInterval(() => {
+            btnNext.click();
+        }, 4000);
+
+        // Pausa a transição se o usuário colocar o mouse em cima
+        track.parentElement.addEventListener('mouseenter', () => clearInterval(autoplay));
+    }
+
+    // Interceptando o formulário
     const form = document.getElementById('formInscricao');
     if (form) {
         form.addEventListener('submit', (e) => {

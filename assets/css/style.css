@@ -77,3 +77,63 @@ body {
     color: var(--cor-primaria);
     margin-bottom: 15px;
 }
+
+/* =========================================
+   Slider Individual estilo Udemy
+   ========================================= */
+.depoimentos-slider-wrapper {
+    width: 100%;
+    position: relative;
+    padding: 20px 0;
+}
+
+.depoimentos-track {
+    display: flex;
+    gap: 20px; /* Espaço entre os cards */
+    transition: transform 0.5s ease-in-out;
+    align-items: stretch;
+}
+
+.depoimento-slide {
+    flex: 0 0 85%; 
+    max-width: 85%;
+}
+
+@media (min-width: 768px) {
+    .depoimento-slide {
+        flex: 0 0 45%; 
+        max-width: 45%;
+    }
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45px;
+    height: 45px;
+    background-color: #ffffff;
+    color: var(--cor-secundaria);
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    z-index: 10;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.slider-btn:hover {
+    background-color: var(--cor-fundo);
+    color: var(--cor-primaria);
+}
+
+.prev-btn { left: 0px; }
+.next-btn { right: 0px; }
+
+@media (min-width: 768px) {
+    .prev-btn { left: 10px; }
+    .next-btn { right: 10px; }
+}
