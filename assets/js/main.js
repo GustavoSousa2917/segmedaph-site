@@ -27,8 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 containerDepoimentos.innerHTML = ''; 
                 
                 dados.depoimentos.forEach((dep) => {
-                    const slide = document.createElement('div'); //cria a div de cada slide pra adicionar o conteúdo
-                    slide.className = 'depoimento-slide'; // Apenas o card normal
+                    const slide = document.createElement('div'); 
+                    slide.className = 'depoimento-slide'; 
                     
                     slide.innerHTML = `
                         <div class="card h-100 border-0 shadow-sm p-4">
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             </div>
                         </div>
                     `;
-                    containerDepoimentos.appendChild(slide); //adiciona o conteúdo acima
+                    containerDepoimentos.appendChild(slide); 
                 });
 
                 iniciarSliderDepoimentos();
@@ -74,53 +74,53 @@ document.addEventListener("DOMContentLoaded", () => {
             slides.forEach((slide, index) => {
                 slide.classList.remove('active');
                 if (index === IndexAtual) {
-                    slide.classList.add('active'); //seta o slide do centro como ativo
+                    slide.classList.add('active'); 
                 }
             });
 
-            // Pega a largura do card, o espaço (gap) e a largura total da tela
-            const slidelargura = slides[0].getBoundingClientRect().width; //pegamos a largura do primeiro slide
-            const gap = parseFloat(window.getComputedStyle(track).gap) || 0; // || se o navegador n retornar o gap do css, ele seta como 0.
+            
+            const slidelargura = slides[0].getBoundingClientRect().width;
+            const gap = parseFloat(window.getComputedStyle(track).gap) || 0; 
             const containerlargura = track.parentElement.getBoundingClientRect().width;
             
-            // empurrar para o centro exato
+          
             const centro = (containerlargura - slidelargura) / 2;
             const movendo = slidelargura + gap;
             
-            // translada os pixels p centralizar
+         
             track.style.transform = `translateX(${-(IndexAtual * movendo) + centro}px)`;
         }
 
-        // Passar pra direita
+     
         btnNext.addEventListener('click', () => {
             if (IndexAtual < slides.length - 1) {
                 IndexAtual++;
             } else {
-                IndexAtual = 0; // Se chegou no fim, volta pro começo
+                IndexAtual = 0; 
             }
             updateSlider();
         });
 
-        // Passar pra esquerda
+       
         btnPrev.addEventListener('click', () => {
             if (IndexAtual > 0) {
                 IndexAtual--;
             } else {
-                IndexAtual = slides.length - 1; // Se tá no começo, vai pro final
+                IndexAtual = slides.length - 1; 
             }
             updateSlider();
         });
 
-        //executa quando abre o site 0,1,2
+    
         updateSlider();
 
-        // transiciona a cada x milisegundos
+        
         let autoplay = setInterval(() => {
             btnNext.click();
         }, 10000);
     }
 
-    // formulario básico
+   
     const form = document.getElementById('formInscricao');
     if (form) {
         form.addEventListener('submit', (e) => {
