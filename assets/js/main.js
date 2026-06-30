@@ -13,9 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
             
             const dados = await response.json();
             
-            // 1. Preenche o Select de Cidades
             if (selectCidade) {
-                selectCidade.innerHTML = '<option value="" selected disabled>Escolha sua cidade...</option>';
+                selectCidade.innerHTML = '<option value="" selected disabled>Escolha sua cidade...</option>'; //pega as cidades que tem no json
                 dados.cidades_disponiveis.forEach(cidade => {
                     const option = document.createElement('option');
                     option.value = cidade.nome.toLowerCase().replace(' - ce', '');
@@ -24,12 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
 
-            // 2. Preenche os Depoimentos Dinamicamente
             if (containerDepoimentos && dados.depoimentos) {
                 containerDepoimentos.innerHTML = ''; 
                 
                 dados.depoimentos.forEach((dep) => {
-                    const slide = document.createElement('div');
+                    const slide = document.createElement('div'); //cria a div de cada slide pra adicionar o conteúdo
                     slide.className = 'depoimento-slide'; // Apenas o card normal
                     
                     slide.innerHTML = `
@@ -51,10 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
                             </div>
                         </div>
                     `;
-                    containerDepoimentos.appendChild(slide);
+                    containerDepoimentos.appendChild(slide); //adiciona o conteúdo acima
                 });
 
-                // Inicia o motor do Slider
                 iniciarSliderDepoimentos();
             }
             
@@ -64,73 +61,66 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // 3. Função do Slider Centralizado
     function iniciarSliderDepoimentos() {
         const track = document.getElementById('container-depoimentos');
         const slides = document.querySelectorAll('.depoimento-slide');
         const btnPrev = document.getElementById('btn-prev');
         const btnNext = document.getElementById('btn-next');
-        let currentIndex = 0;
+        let IndexAtual = 0;
 
         if (slides.length === 0) return;
 
         function updateSlider() {
-            // Adiciona a classe 'active' apenas no item do meio
             slides.forEach((slide, index) => {
                 slide.classList.remove('active');
-                if (index === currentIndex) {
-                    slide.classList.add('active');
+                if (index === IndexAtual) {
+                    slide.classList.add('active'); //seta o slide do centro como ativo
                 }
             });
 
             // Pega a largura do card, o espaço (gap) e a largura total da tela
-            const slideWidth = slides[0].getBoundingClientRect().width;
-            const gap = parseFloat(window.getComputedStyle(track).gap) || 0;
-            const containerWidth = track.parentElement.getBoundingClientRect().width;
+            const slidelargura = slides[0].getBoundingClientRect().width; //pegamos a largura do primeiro slide
+            const gap = parseFloat(window.getComputedStyle(track).gap) || 0; // || se o navegador n retornar o gap do css, ele seta como 0.
+            const containerlargura = track.parentElement.getBoundingClientRect().width;
             
-            // O offset é a margem necessária para empurrar o slide para o centro exato
-            const offset = (containerWidth - slideWidth) / 2;
-            const moveAmount = slideWidth + gap;
+            // empurrar para o centro exato
+            const centro = (containerlargura - slidelargura) / 2;
+            const movendo = slidelargura + gap;
             
-            // Move a trilha compensando com o offset para centralizar
-            track.style.transform = `translateX(${-(currentIndex * moveAmount) + offset}px)`;
+            // translada os pixels p centralizar
+            track.style.transform = `translateX(${-(IndexAtual * movendo) + centro}px)`;
         }
 
-        // Lógica dos Botões
+        // Passar pra direita
         btnNext.addEventListener('click', () => {
-            if (currentIndex < slides.length - 1) {
-                currentIndex++;
+            if (IndexAtual < slides.length - 1) {
+                IndexAtual++;
             } else {
-                currentIndex = 0; // Se chegou no fim, volta pro começo
+                IndexAtual = 0; // Se chegou no fim, volta pro começo
             }
             updateSlider();
         });
 
+        // Passar pra esquerda
         btnPrev.addEventListener('click', () => {
-            if (currentIndex > 0) {
-                currentIndex--;
+            if (IndexAtual > 0) {
+                IndexAtual--;
             } else {
-                currentIndex = slides.length - 1; // Se está no começo, vai pro final
+                IndexAtual = slides.length - 1; // Se tá no começo, vai pro final
             }
             updateSlider();
         });
 
-        // Executa a primeira vez
+        //executa quando abre o site 0,1,2
         updateSlider();
 
-        // Recalcula se o usuário virar o celular ou redimensionar a tela
-        window.addEventListener('resize', updateSlider);
-
-        // Transição automática a cada 4 segundos
+        // transiciona a cada x milisegundos
         let autoplay = setInterval(() => {
             btnNext.click();
-        }, 4000);
-
-        // Pausa a transição se o usuário colocar o mouse em cima
-        track.parentElement.addEventListener('mouseenter', () => clearInterval(autoplay));
+        }, 10000);
     }
 
-    // Interceptando o formulário
+    // formulario básico
     const form = document.getElementById('formInscricao');
     if (form) {
         form.addEventListener('submit', (e) => {
